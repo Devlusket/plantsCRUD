@@ -28,6 +28,15 @@ public class PlantController {
     return this.plantRepository.findById(id);
   }
 
+  @GetMapping("/search")
+  public Iterable<Plant> searchPlants(@RequestParam(name="hasFruit", required=false) Boolean hasFruit) {
+    if (hasFruit != null) {
+      return this.plantRepository.findByHasFruitTrue();
+    } else {
+      return (Iterable<Plant>) this.plantRepository.findAll();
+    }
+  }
+
   @PostMapping
   public Plant createNewPlant(@RequestBody Plant plant) {
     Plant newPlant = this.plantRepository.save(plant);
