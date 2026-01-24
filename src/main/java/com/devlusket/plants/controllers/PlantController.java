@@ -29,11 +29,20 @@ public class PlantController {
   }
 
   @GetMapping("/search")
-  public Iterable<Plant> searchPlants(@RequestParam(name="hasFruit", required=false) Boolean hasFruit) {
-    if (hasFruit != null) {
+  public Iterable<Plant> searchPlants(@RequestParam(name="hasFruit", required=false) Boolean hasFruit,
+                                      @RequestParam(name="maxQuantity", required=false) Integer quantity) {
+    if (hasFruit != null && quantity != null && hasFruit) {
+      return this.plantRepository.findByHasFruitTrueAndQuantityLessThanIterable(quantity);
+    } else if (hasFruit != null && quantity != null && !hasFruit) {
+      return this.plantRepository.findByHasFruitFalseAndQuantityLessThanIterable(quantity);
+    } else if (hasFruit != null && hasFruit) {
       return this.plantRepository.findByHasFruitTrue();
+    } else if (hasFruit != null && !hasFruit) {
+      return this.plantRepository.findByHasFruitFalse();
+    } else if (quantity != null) {
+      return this.plantRepository.findByQuantityLessThan(quantity);
     } else {
-      return (Iterable<Plant>) this.plantRepository.findAll();
+      return this.plantRepository.findAll();
     }
   }
 
