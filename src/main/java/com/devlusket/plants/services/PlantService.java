@@ -48,13 +48,13 @@ public class PlantService {
 
   public Iterable<Plant> searchPlants(Boolean hasFruit, Integer quantity) {
 
-    
+
     if (hasFruit != null && quantity != null){
-      return this.plantRepository.findByHasFruitTrueAndQuantityLessThanIterable(quantity);
+      return this.plantRepository.findByHasFruitAndQuantityLessThan(hasFruit, quantity);
     }
 
     if (hasFruit != null) {
-      return this.plantRepository.findByHasFruitTrue();
+      return this.plantRepository.findByHasFruit(hasFruit);
     }
 
     if(quantity != null) {

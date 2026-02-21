@@ -19,7 +19,7 @@ public class Plant {
   private String name;
 
   @Column(name="QUANTITY")
-  private String quantity;
+  private Integer quantity;
 
   @Column(name="WATERING_FREQUENCY")
   private String wateringFrequency;
@@ -42,11 +42,11 @@ public class Plant {
     this.name = name;
   }
 
-  public String getQuantity() {
+  public Integer getQuantity() {
     return quantity;
   }
 
-  public void setQuantity(String quantity) {
+  public void setQuantity(Integer quantity) {
     this.quantity = quantity;
   }
 
