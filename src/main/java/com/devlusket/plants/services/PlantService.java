@@ -29,22 +29,6 @@ public class PlantService {
     return this.plantRepository.findById(id);
   }
 
-  // public Iterable<Plant> searchPlants(Boolean hasFruit, Integer quantity) {
-
-  //   if (hasFruit != null && quantity != null && hasFruit) {
-  //     return this.plantRepository.findByHasFruitTrueAndQuantityLessThanIterable(quantity);
-  //   } else if (hasFruit != null && quantity != null && !hasFruit) {
-  //     return this.plantRepository.findByHasFruitFalseAndQuantityLessThanIterable(quantity);
-  //   } else if (hasFruit != null && hasFruit) {
-  //     return this.plantRepository.findByHasFruitTrue();
-  //   } else if (hasFruit != null && !hasFruit) {
-  //     return this.plantRepository.findByHasFruitFalse();
-  //   } else if (quantity != null) {
-  //     return this.plantRepository.findByQuantityLessThan(quantity);
-  //   } else {
-  //     return this.plantRepository.findAll();
-  //   }
-  // }
 
   public Iterable<Plant> searchPlants(Boolean hasFruit, Integer quantity) {
 
@@ -68,8 +52,7 @@ public class PlantService {
 
   @Transactional
   public Plant createNewPlant(Plant plant) {
-    Plant newPlant = this.plantRepository.save(plant);
-    return newPlant;
+    return this.plantRepository.save(plant);
   }
 
 
@@ -102,9 +85,7 @@ public class PlantService {
   @Transactional
   public void deletePlant(Integer id) {
 
-    if(!plantRepository.existsById(id)) {
-      throw new RuntimeException("Plant not found with id: " + id);
-    }
+    plantRepository.findById(id).orElseThrow(() -> new RuntimeException("Plant not found with id: " + id));
 
     plantRepository.deleteById(id);
 
