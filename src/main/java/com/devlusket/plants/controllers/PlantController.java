@@ -1,105 +1,55 @@
 package com.devlusket.plants.controllers;
-
+import com.devlusket.plants.services.PlantService;
 import org.springframework.web.bind.annotation.*;
 
 import com.devlusket.plants.models.Plant;
-import com.devlusket.plants.repositories.PlantRepository;
 
 import java.util.Optional;
-
 
 @RestController
 @RequestMapping("/plants")
 public class PlantController {
 
-  private final PlantRepository plantRepository;
+  private final PlantService plantService;
 
-  public PlantController(PlantRepository plantRepository) {
-    this.plantRepository = plantRepository;
+
+  public PlantController(PlantService plantService) {
+    this.plantService = plantService;
   }
 
   @GetMapping
   public Iterable<Plant> getAllPlants() {
-    return this.plantRepository.findAll();
+    return plantService.findAllPlants();
   }
 
   @GetMapping("/{id}")
   public Optional<Plant> getPlantById(@PathVariable Integer id) {
-    return this.plantRepository.findById(id);
+    return plantService.findById(id);
   }
 
   @GetMapping("/search")
-  public Iterable<Plant> searchPlants(@RequestParam(name="hasFruit", required=false) Boolean hasFruit,
-                                      @RequestParam(name="maxQuantity", required=false) Integer quantity) {
-    if (hasFruit != null && quantity != null && hasFruit) {
-      return this.plantRepository.findByHasFruitTrueAndQuantityLessThanIterable(quantity);
-    } else if (hasFruit != null && quantity != null && !hasFruit) {
-      return this.plantRepository.findByHasFruitFalseAndQuantityLessThanIterable(quantity);
-    } else if (hasFruit != null && hasFruit) {
-      return this.plantRepository.findByHasFruitTrue();
-    } else if (hasFruit != null && !hasFruit) {
-      return this.plantRepository.findByHasFruitFalse();
-    } else if (quantity != null) {
-      return this.plantRepository.findByQuantityLessThan(quantity);
-    } else {
-      return this.plantRepository.findAll();
-    }
+  public Iterable<Plant> searchPlants(
+      @RequestParam(name = "hasFruit", required = false) Boolean hasFruit,
+      @RequestParam(name = "maxQuantity", required = false) Integer quantity) {
+
+    return plantService.searchPlants(hasFruit, quantity);
   }
 
   @PostMapping
   public Plant createNewPlant(@RequestBody Plant plant) {
-    Plant newPlant = this.plantRepository.save(plant);
-    return newPlant;
+    return plantService.createNewPlant(plant);
   }
 
-  @PutMapping("/{id}")
+  @PatchMapping("/{id}")
   public Plant updatePlant(@PathVariable Integer id, @RequestBody Plant plant) {
-    Optional<Plant> plantToUpdateOptional = this.plantRepository.findById(id);
-    if (!plantToUpdateOptional.isPresent()){
-      return null;
-    }
-
-    Plant plantToUpdate = plantToUpdateOptional.get();
-
-    if (plant.getName() != null) {
-      plantToUpdate.setName(plant.getName());
-    }
-
-    if (plant.getQuantity() != null) {
-      plantToUpdate.setQuantity(plant.getQuantity());
-    }
-
-    if (plant.getWateringFrequency() != null) {
-      plantToUpdate.setWateringFrequency(plant.getWateringFrequency());
-    }
-
-    if (plant.getHasFruit() != null) {
-      plantToUpdate.setHasFruit(plant.getHasFruit());
-    }
-
-    Plant updatedPlant = this.plantRepository.save(plantToUpdate);
-    return updatedPlant;
+    return plantService.updatePlant(id, plant);
   }
 
   @DeleteMapping("/{id}")
   public Plant deletePlant(@PathVariable Integer id) {
-    Optional<Plant> plantToDeleteOptional = this.plantRepository.findById(id);
-
-    if (!plantToDeleteOptional.isPresent()) {
-      return null;
-    }
-
-    Plant plantToDelete = plantToDeleteOptional.get();
-    this.plantRepository.delete(plantToDelete);
-    return plantToDelete;
+    plantService.deletePlant(id);
+    return null;
   }
-
-
-
-
-  
-
-
 
 
 }
