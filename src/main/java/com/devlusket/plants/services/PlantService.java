@@ -1,9 +1,13 @@
 package com.devlusket.plants.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.devlusket.plants.dto.PlantRequestDTO;
+import com.devlusket.plants.dto.PlantResponseDTO;
+import com.devlusket.plants.mapper.PlantMapper;
 import com.devlusket.plants.models.Plant;
 import com.devlusket.plants.repositories.PlantRepository;
 
@@ -20,8 +24,11 @@ public class PlantService {
 
 
 
-  public Iterable<Plant> findAllPlants(){
-    return this.plantRepository.findAll();
+  public List<PlantResponseDTO> findAllPlants(){
+    return this.plantRepository.findAll()
+            .stream()
+            .map(PlantMapper::toResponseDTO)
+            .toList();
   }
 
 
@@ -51,8 +58,10 @@ public class PlantService {
 
 
   @Transactional
-  public Plant createNewPlant(Plant plant) {
-    return this.plantRepository.save(plant);
+  public PlantResponseDTO createNewPlant(PlantRequestDTO dto) {
+    Plant plant = PlantMapper.toEntity(dto);
+    Plant savedPlant = plantRepository.save(plant);
+    return PlantMapper.toResponseDTO(savedPlant);
   }
 
 

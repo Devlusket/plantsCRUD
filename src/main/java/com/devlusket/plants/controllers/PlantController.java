@@ -2,6 +2,8 @@ package com.devlusket.plants.controllers;
 import com.devlusket.plants.services.PlantService;
 import org.springframework.web.bind.annotation.*;
 
+import com.devlusket.plants.dto.PlantRequestDTO;
+import com.devlusket.plants.dto.PlantResponseDTO;
 import com.devlusket.plants.models.Plant;
 
 import java.util.Optional;
@@ -18,7 +20,7 @@ public class PlantController {
   }
 
   @GetMapping
-  public Iterable<Plant> getAllPlants() {
+  public Iterable<PlantResponseDTO> getAllPlants() {
     return plantService.findAllPlants();
   }
 
@@ -36,8 +38,8 @@ public class PlantController {
   }
 
   @PostMapping
-  public Plant createNewPlant(@RequestBody Plant plant) {
-    return plantService.createNewPlant(plant);
+  public PlantResponseDTO createNewPlant(@RequestBody PlantRequestDTO dto) {
+    return plantService.createNewPlant(dto);
   }
 
   @PatchMapping("/{id}")

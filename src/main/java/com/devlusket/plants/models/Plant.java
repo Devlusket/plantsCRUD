@@ -27,6 +27,9 @@ public class Plant {
   @Column(name="HAS_FRUIT")
   private Boolean hasFruit;
 
+  @Column(name="ACCESS_PASSWORD")
+  private String accessPassword;
+
 
   public Integer getId() {
     return id;
@@ -64,6 +67,14 @@ public class Plant {
 
   public void setHasFruit(Boolean hasFruit) {
     this.hasFruit = hasFruit;
+  }
+
+  public String getAccessPassword() {
+    return accessPassword;
+  }
+
+  public void setAccessPassword(String accessPassword) {
+    this.accessPassword = accessPassword;
   }
 
 }
