@@ -1,7 +1,6 @@
 package com.devlusket.plants.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -32,8 +31,10 @@ public class PlantService {
   }
 
 
-  public Optional<Plant> findById(Integer id) {
-    return this.plantRepository.findById(id);
+  public PlantResponseDTO findById(Integer id) {
+    Plant plant = this.plantRepository.findById(id)
+                  .orElseThrow(() -> new RuntimeException("Plants not found with id: " + id));
+    return PlantMapper.toResponseDTO(plant);
   }
 
 
@@ -66,28 +67,15 @@ public class PlantService {
 
 
   @Transactional
-  public Plant updatePlant(Integer id, Plant updatedPlant) {
+  public PlantResponseDTO updatePlant(Integer id, PlantRequestDTO dto) {
 
 
-    Plant plant = plantRepository.findById(id).orElseThrow(() -> new RuntimeException("Plant not found with id: " + id));
+    Plant plant = plantRepository.findById(id)
+                  .orElseThrow(() -> new RuntimeException("Plant not found with id: " + id));
 
-    if (updatedPlant.getName() != null) {
-      plant.setName(updatedPlant.getName());
-    }
+    PlantMapper.updateEntityFromDTO(plant, dto);
 
-    if (updatedPlant.getQuantity() != null) {
-      plant.setQuantity(updatedPlant.getQuantity());
-    }
-
-    if (updatedPlant.getHasFruit() != null) {
-      plant.setHasFruit(updatedPlant.getHasFruit());
-    }
-
-    if (updatedPlant.getWateringFrequency() != null) {
-      plant.setWateringFrequency(updatedPlant.getWateringFrequency());
-    }
-
-    return plantRepository.save(plant);
+    return PlantMapper.toResponseDTO(plantRepository.save(plant));
   }
 
 

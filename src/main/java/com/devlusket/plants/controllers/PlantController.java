@@ -6,7 +6,6 @@ import com.devlusket.plants.dto.PlantRequestDTO;
 import com.devlusket.plants.dto.PlantResponseDTO;
 import com.devlusket.plants.models.Plant;
 
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/plants")
@@ -25,7 +24,7 @@ public class PlantController {
   }
 
   @GetMapping("/{id}")
-  public Optional<Plant> getPlantById(@PathVariable Integer id) {
+  public PlantResponseDTO getPlantById(@PathVariable Integer id) {
     return plantService.findById(id);
   }
 
@@ -43,8 +42,8 @@ public class PlantController {
   }
 
   @PatchMapping("/{id}")
-  public Plant updatePlant(@PathVariable Integer id, @RequestBody Plant plant) {
-    return plantService.updatePlant(id, plant);
+  public PlantResponseDTO updatePlant(@PathVariable Integer id, @RequestBody PlantRequestDTO updatedPlant) {
+    return plantService.updatePlant(id, updatedPlant);
   }
 
   @DeleteMapping("/{id}")

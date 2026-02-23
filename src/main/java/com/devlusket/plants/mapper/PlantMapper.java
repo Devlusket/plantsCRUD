@@ -30,4 +30,21 @@ public class PlantMapper {
     return plant;
   }
 
+  public static void updateEntityFromDTO(Plant plant, PlantRequestDTO dto) {
+    if (dto.getName() != null) {
+      plant.setName(dto.getName());
+    }
+
+    if (dto.getQuantity() != null) {
+      plant.setQuantity(dto.getQuantity());
+    }
+
+    if (dto.getHasFruit() != null) {
+      plant.setHasFruit(dto.getHasFruit());
+    }
+
+    if (dto.getWateringFrequency() != null) {
+      plant.setWateringFrequency(dto.getWateringFrequency());
+    }
+  }
 }
