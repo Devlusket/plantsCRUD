@@ -1,5 +1,8 @@
 package com.devlusket.plants.controllers;
 import com.devlusket.plants.services.PlantService;
+
+import java.util.List;
+
 import org.springframework.web.bind.annotation.*;
 
 import com.devlusket.plants.dto.PlantRequestDTO;
@@ -29,7 +32,7 @@ public class PlantController {
   }
 
   @GetMapping("/search")
-  public Iterable<Plant> searchPlants(
+  public List<PlantResponseDTO> searchPlants(
       @RequestParam(name = "hasFruit", required = false) Boolean hasFruit,
       @RequestParam(name = "maxQuantity", required = false) Integer quantity) {
 
@@ -42,8 +45,8 @@ public class PlantController {
   }
 
   @PatchMapping("/{id}")
-  public PlantResponseDTO updatePlant(@PathVariable Integer id, @RequestBody PlantRequestDTO updatedPlant) {
-    return plantService.updatePlant(id, updatedPlant);
+  public PlantResponseDTO updatePlant(@PathVariable Integer id, @RequestBody PlantRequestDTO dto) {
+    return plantService.updatePlant(id, dto);
   }
 
   @DeleteMapping("/{id}")
